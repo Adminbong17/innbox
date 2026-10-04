@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>innbox Merchant Admin — E-Commerce Control Center</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#FAF3F0',
+                            100: '#F4E5DE',
+                            200: '#E8C9BD',
+                            300: '#D8A697',
+                            400: '#C37667',
+                            500: '#AD4B46',
+                            600: '#983636',
+                            700: '#832626',
+                            800: '#681A1A',
+                            900: '#481212'
+                        },
+                        rose: {
+                            50: '#FAF3F0',
+                            100: '#F4E5DE',
+                            200: '#E8C9BD',
+                            300: '#D8A697',
+                            400: '#C37667',
+                            500: '#AD4B46',
+                            600: '#983636',
+                            700: '#832626',
+                            800: '#681A1A',
+                            900: '#481212'
+                        },
+                        nude: {
+                            50: '#FAF6F2',
+                            100: '#F5ECE3',
+                            200: '#EADCCE',
+                            300: '#DEC9B5',
+                            400: '#CEB299',
+                            500: '#B89377',
+                            800: '#3D2C24',
+                            900: '#241812'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-stone-100 text-stone-800 antialiased min-h-screen flex flex-col font-sans selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- ======================================================== -->
+    <!-- 1. ADMIN AUTHENTICATION MODAL -->
+    <!-- ======================================================== -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl border border-stone-200 text-center space-y-6">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 text-white flex items-center justify-center text-2xl mx-auto shadow-lg shadow-brand-700/30">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h2 class="font-serif font-bold text-2xl text-stone-900">innbox Admin</h2>
+                <p class="text-xs text-stone-500 mt-1">Merchant Control Portal for <span class="text-brand-700 font-semibold">innbox.qweekbd.com</span></p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div class="text-left">
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Admin Passcode</label>
+                    <input type="password" id="admin-password-input" required placeholder="Enter password (default: innbox123)" 
+                           class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                </div>
+                <div id="login-error-msg" class="text-xs text-red-600 font-medium hidden"></div>
+                <button type="submit" class="w-full py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl shadow-lg transition active:scale-95">
+                    Unlock Dashboard
+                </button>
+            </form>
+            <div class="text-[11px] text-stone-400">
+                Default Master Password: <code class="bg-stone-100 px-2 py-0.5 rounded text-stone-700 font-bold">innbox123</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 2. MAIN ADMIN SHELL WRAPPER -->
+    <!-- ======================================================== -->
+    <div id="admin-main-wrapper" class="hidden flex-1 flex flex-col md:flex-row">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-white border-r border-stone-200 flex flex-col shrink-0">
+            <!-- Brand -->
+            <div class="p-5 border-b border-stone-100 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white font-serif font-bold italic text-base">in</div>
+                    <div>
+                        <span class="font-serif font-black text-lg text-stone-900 block leading-none">innbox</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Store Admin</span>
+                    </div>
+                </div>
+                <a href="index.html" target="_blank" class="text-stone-400 hover:text-stone-700 p-1.5 rounded-lg text-xs" title="View Store">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="p-4 space-y-1.5 flex-1 text-xs font-semibold">
+                <button id="nav-btn-overview" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-brand-50 text-brand-700 font-bold transition text-left">
+                    <i class="fa-solid fa-chart-pie text-sm w-4"></i>
+                    <span>Overview</span>
+                </button>
+
+                <button id="nav-btn-orders" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-stone-600 hover:bg-stone-50 transition text-left">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-dolly text-sm w-4"></i>
+                        <span>Orders</span>
+                    </div>
+                    <span id="nav-badge-pending" class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Orders</span>
+                </button>
+
+                <button id="nav-btn-products" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-600 hover:bg-stone-50 transition text-left">
+                    <i class="fa-solid fa-box-open text-sm w-4"></i>
+                    <span>Products</span>
+                </button>
+
+                <button id="nav-btn-settings" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-600 hover:bg-stone-50 transition text-left">
+                    <i class="fa-solid fa-sliders text-sm w-4"></i>
+                    <span>Store Settings</span>
+                </button>
+            </nav>
+
+            <!-- User footer -->
+            <div class="p-4 border-t border-stone-100 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-stone-900 text-white flex items-center justify-center font-bold text-[10px]">A</div>
+                    <span class="text-stone-700 font-semibold">Store Manager</span>
+                </div>
+                <button onclick="handleAdminLogout()" class="text-stone-400 hover:text-red-600 p-1.5 rounded-lg" title="Log Out">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-4 sm:p-8 max-w-7xl mx-auto w-full">
+            
+            <!-- VIEW 1: DASHBOARD OVERVIEW -->
+            <section id="view-overview" class="space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-stone-900 tracking-tight">Merchant Dashboard</h1>
+                        <p class="text-xs text-stone-500 mt-1">Live sales & operational performance for innbox</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportOrdersCSV()" class="px-3.5 py-2 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-export text-emerald-600"></i>
+                            <span>Export CSV</span>
+                        </button>
+                        <button onclick="openProductModal()" class="px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add Product</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Total Revenue -->
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between text-stone-400">
+                            <span class="text-xs font-semibold">Total Revenue</span>
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                            </div>
+                        </div>
+                        <div id="kpi-total-revenue" class="text-2xl font-black text-stone-900">৳0</div>
+                        <span class="text-[10px] text-emerald-600 font-bold block"><i class="fa-solid fa-arrow-trend-up"></i> Real-time orders</span>
+                    </div>
+
+                    <!-- Total Orders -->
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between text-stone-400">
+                            <span class="text-xs font-semibold">Total Orders</span>
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                            </div>
+                        </div>
+                        <div id="kpi-total-orders" class="text-2xl font-black text-stone-900">0</div>
+                        <span class="text-[10px] text-stone-400 font-medium block">All-time packages</span>
+                    </div>
+
+                    <!-- Pending Orders -->
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between text-stone-400">
+                            <span class="text-xs font-semibold">Pending Delivery</span>
+                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                        </div>
+                        <div id="kpi-pending-orders" class="text-2xl font-black text-amber-600">0</div>
+                        <span class="text-[10px] text-amber-700 font-semibold block">Requires Confirmation</span>
+                    </div>
+
+                    <!-- Low Stock Alert -->
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between text-stone-400">
+                            <span class="text-xs font-semibold">Low Stock Alert</span>
+                            <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                        </div>
+                        <div id="kpi-low-stock" class="text-2xl font-black text-rose-600">0</div>
+                        <span class="text-[10px] text-stone-400 font-medium block">Items with &lt;10 stock</span>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table -->
+                <div class="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
+                    <div class="p-5 border-b border-stone-100 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-sm text-stone-900">Recent Customer Orders</h3>
+                            <p class="text-[11px] text-stone-400">Latest deliveries placed online</p>
+                        </div>
+                        <button onclick="document.getElementById('nav-btn-orders').click()" class="text-xs font-bold text-brand-700 hover:underline">
+                            View All Orders &rarr;
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-stone-50 text-stone-500 text-[11px] font-bold uppercase tracking-wider border-b border-stone-100">
+                                <tr>
+                                    <th class="py-3 px-4">Order ID</th>
+                                    <th class="py-3 px-4">Customer</th>
+                                    <th class="py-3 px-4">Total</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-tbody" class="divide-y divide-stone-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 2: ORDERS MANAGEMENT -->
+            <section id="view-orders" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-stone-900 tracking-tight">Order Management</h1>
+                        <p class="text-xs text-stone-500 mt-1">Review orders, change statuses, and print discreet packaging slips</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportOrdersCSV()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span>Export for Courier</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filters Bar -->
+                <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-3">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="relative flex-1 max-w-md">
+                            <input type="text" id="orders-search-input" placeholder="Search by Order ID, Phone, Customer Name..." 
+                                   class="w-full text-xs p-2.5 pl-9 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-stone-400 text-xs"></i>
+                        </div>
+
+                        <!-- Status filter tabs -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-stone-900 text-white transition shrink-0" data-status="all">All</button>
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 transition shrink-0" data-status="pending">Pending</button>
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 transition shrink-0" data-status="confirmed">Confirmed</button>
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 transition shrink-0" data-status="shipped">Shipped</button>
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 transition shrink-0" data-status="delivered">Delivered</button>
+                            <button class="order-filter-pill px-3 py-1.5 rounded-lg font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 transition shrink-0" data-status="cancelled">Cancelled</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Table -->
+                <div class="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-stone-50 text-stone-500 text-[11px] font-bold uppercase tracking-wider border-b border-stone-100">
+                                <tr>
+                                    <th class="py-3 px-4">Order No</th>
+                                    <th class="py-3 px-4">Date</th>
+                                    <th class="py-3 px-4">Customer</th>
+                                    <th class="py-3 px-4">Package</th>
+                                    <th class="py-3 px-4">Total</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-tbody" class="divide-y divide-stone-100">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: PRODUCTS MANAGEMENT -->
+            <section id="view-products" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-stone-900 tracking-tight">Products Catalog</h1>
+                        <p class="text-xs text-stone-500 mt-1">Manage bras, panties, lingerie, nighties, and sexual wellness items</p>
+                    </div>
+                    <button onclick="openProductModal()" class="px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Add New Product</span>
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs">
+                    <div class="relative max-w-md">
+                        <input type="text" id="products-admin-search" placeholder="Search by title, category, or slug..." 
+                               class="w-full text-xs p-2.5 pl-9 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-stone-400 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-stone-50 text-stone-500 text-[11px] font-bold uppercase tracking-wider border-b border-stone-100">
+                                <tr>
+                                    <th class="py-3 px-4">Photo</th>
+                                    <th class="py-3 px-4">Product Name</th>
+                                    <th class="py-3 px-4">Price</th>
+                                    <th class="py-3 px-4">Stock</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-table-tbody" class="divide-y divide-stone-100">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 4: STORE SETTINGS -->
+            <section id="view-settings" class="space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-stone-900 tracking-tight">Store Configuration</h1>
+                    <p class="text-xs text-stone-500 mt-1">Configure Supabase credentials, delivery fees, payment merchant details</p>
+                </div>
+
+                <form onsubmit="handleSettingsSubmit(event)" class="space-y-6 max-w-3xl">
+                    
+                    <!-- Database Connection Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                            <div>
+                                <h3 class="font-bold text-sm text-stone-900">Supabase Cloud Database</h3>
+                                <p class="text-[11px] text-stone-400">Connect to your Supabase PostgreSQL backend</p>
+                            </div>
+                            <div id="db-connection-status">
+                                <!-- Connection badge -->
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Supabase Project URL</label>
+                            <input type="url" id="set-supabase-url" placeholder="https://your-project.supabase.co" 
+                                   class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Supabase Anon Key</label>
+                            <input type="text" id="set-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." 
+                                   class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                            <span class="text-[10px] text-stone-400 mt-1 block">Paste your Supabase URL & Anon Key to sync orders and products directly in real-time.</span>
+                        </div>
+                    </div>
+
+                    <!-- Store Contact & WhatsApp -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                        <h3 class="font-bold text-sm text-stone-900 border-b border-stone-100 pb-3">Store Contact & Hotlines</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">Customer Support Phone</label>
+                                <input type="text" id="set-store-phone" placeholder="+880 1700-000000" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">WhatsApp Business Number (with country code)</label>
+                                <input type="text" id="set-whatsapp-num" placeholder="8801700000000" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Rates -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                        <h3 class="font-bold text-sm text-stone-900 border-b border-stone-100 pb-3">Delivery Charges (Bangladesh)</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">Inside Dhaka Fee (৳)</label>
+                                <input type="number" id="set-fee-inside" value="70" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">Outside Dhaka Fee (৳)</label>
+                                <input type="number" id="set-fee-outside" value="130" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Payment Numbers -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                        <h3 class="font-bold text-sm text-stone-900 border-b border-stone-100 pb-3">Payment Merchant Numbers</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">bKash Account Number</label>
+                                <input type="text" id="set-bkash-num" placeholder="01700000000" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-700 mb-1">Nagad Account Number</label>
+                                <input type="text" id="set-nagad-num" placeholder="01700000000" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security / Passcode -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                        <h3 class="font-bold text-sm text-stone-900 border-b border-stone-100 pb-3">Admin Security</h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Admin Access Passcode</label>
+                            <input type="text" id="set-admin-pass" value="innbox123" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl font-mono">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl shadow-lg transition active:scale-95">
+                        Save Store Settings
+                    </button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: ORDER DETAILS & STATUS UPDATE -->
+    <!-- ======================================================== -->
+    <div id="order-details-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 shadow-2xl border border-stone-100 relative">
+            <button onclick="closeOrderDetailsModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-800 p-2 rounded-lg">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="order-modal-details-content">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: ADD / EDIT PRODUCT -->
+    <!-- ======================================================== -->
+    <div id="product-form-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 shadow-2xl border border-stone-100 relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-800 p-2 rounded-lg">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <h3 id="product-modal-title" class="text-xl font-extrabold text-stone-900 mb-4 border-b border-stone-100 pb-3">Add Product</h3>
+
+            <form id="product-form" onsubmit="handleProductFormSubmit(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">Product Title *</label>
+                    <input type="text" name="prod_title" required placeholder="e.g. Ultra Soft Everyday T-Shirt Bra" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Category *</label>
+                        <select name="prod_category" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                            <option value="Bra">Bra</option>
+                            <option value="Panty">Panty</option>
+                            <option value="Lingerie">Lingerie</option>
+                            <option value="Nighty">Nighty & Robes</option>
+                            <option value="Sexual Wellness">Sexual Wellness</option>
+                            <option value="Combos">Combos & Gifts</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Stock Quantity</label>
+                        <input type="number" name="prod_stock" value="50" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Regular Price (৳) *</label>
+                        <input type="number" name="prod_price" required placeholder="e.g. 750" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Discount Price (৳) (Optional)</label>
+                        <input type="number" name="prod_discount_price" placeholder="e.g. 590" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">Sizes (Comma separated)</label>
+                    <input type="text" name="prod_sizes" placeholder="32B, 34B, 36B or M, L, XL" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">Image URL</label>
+                    <input type="url" name="prod_image" placeholder="https://images.unsplash.com/..." class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-mono text-[11px]">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">Product Description</label>
+                    <textarea name="prod_description" rows="3" placeholder="Fabric details, soft padding, discreet packaging info..." class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl"></textarea>
+                </div>
+
+                <div class="flex items-center gap-6 pt-2">
+                    <label class="flex items-center gap-2 cursor-pointer font-semibold text-stone-700">
+                        <input type="checkbox" name="prod_is_active" checked class="text-brand-600 rounded">
+                        <span>Active on Website</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer font-semibold text-stone-700">
+                        <input type="checkbox" name="prod_is_featured" class="text-brand-600 rounded">
+                        <span>Feature on Homepage</span>
+                    </label>
+                </div>
+
+                <div class="pt-4 border-t border-stone-100 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl transition">
+                        Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

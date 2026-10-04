@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>innbox — Premium Intimates, Lingerie & Personal Wellness | 100% Discreet Delivery</title>
+    <meta name="description" content="Shop premium bra, panty, sexy lingerie, babydoll, cotton nighty, and sexual wellness essentials in Bangladesh. 100% discreet packaging guaranteed.">
+    <link rel="canonical" href="https://innbox.qweekbd.com">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#FAF3F0',
+                            100: '#F4E5DE',
+                            200: '#E8C9BD',
+                            300: '#D8A697',
+                            400: '#C37667',
+                            500: '#AD4B46',
+                            600: '#983636',
+                            700: '#832626',
+                            800: '#681A1A',
+                            900: '#481212'
+                        },
+                        rose: {
+                            50: '#FAF3F0',
+                            100: '#F4E5DE',
+                            200: '#E8C9BD',
+                            300: '#D8A697',
+                            400: '#C37667',
+                            500: '#AD4B46',
+                            600: '#983636',
+                            700: '#832626',
+                            800: '#681A1A',
+                            900: '#481212'
+                        },
+                        nude: {
+                            50: '#FAF6F2',
+                            100: '#F5ECE3',
+                            200: '#EADCCE',
+                            300: '#DEC9B5',
+                            400: '#CEB299',
+                            500: '#B89377',
+                            800: '#3D2C24',
+                            900: '#241812'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-[#FAF6F2] text-stone-800 antialiased min-h-screen flex flex-col selection:bg-brand-100 selection:text-brand-800">
+
+    <!-- 1. Top Discreet Announcement Bar -->
+    <div class="bg-stone-900 text-stone-200 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-2 tracking-wide text-[11px] sm:text-xs">
+                <span class="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-[10px]"></i> 100% SECRET PACKAGING
+                </span>
+                <span class="text-stone-300">No shop logo or item name printed on the parcel. Full privacy guaranteed.</span>
+            </div>
+            <div class="flex items-center gap-4 text-[11px] font-medium text-stone-300">
+                <button onclick="openTrackModal()" class="hover:text-white flex items-center gap-1 transition">
+                    <i class="fa-solid fa-location-dot text-brand-500"></i> Track Order
+                </button>
+                <span>|</span>
+                <a href="tel:+8801700000000" class="hover:text-white flex items-center gap-1 store-phone transition">
+                    <i class="fa-solid fa-phone text-stone-400"></i> +880 1700-000000
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Brand -->
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-700/20 group-hover:scale-105 transition">
+                    <span class="font-serif italic font-bold text-xl">in</span>
+                </div>
+                <div>
+                    <span class="font-serif font-black text-2xl tracking-tight text-stone-900 block leading-none">innbox</span>
+                    <span class="text-[10px] tracking-widest uppercase font-semibold text-stone-400 block mt-1">Intimates & Wellness</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-6">
+                <div class="relative w-full">
+                    <input type="text" id="search-input" placeholder="Search bra, panty, lingerie, wellness..." 
+                           class="w-full bg-stone-50 border border-stone-200 rounded-full pl-11 pr-4 py-2.5 text-xs focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:bg-white transition text-stone-800 placeholder-stone-400">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-stone-400 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Header Action Icons -->
+            <div class="flex items-center gap-3">
+                <!-- Size Calculator Guide Button -->
+                <button type="button" onclick="openSizeGuideModal()" 
+                        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-stone-600 hover:text-brand-700 bg-stone-100 hover:bg-stone-200 rounded-xl transition">
+                    <i class="fa-solid fa-ruler-combined text-brand-600"></i>
+                    <span>Size Guide</span>
+                </button>
+
+                <!-- Order Tracking Button -->
+                <button type="button" onclick="openTrackModal()" 
+                        class="p-2.5 text-stone-600 hover:text-brand-700 hover:bg-stone-100 rounded-xl transition relative" title="Track Order">
+                    <i class="fa-solid fa-truck-fast text-lg"></i>
+                </button>
+
+                <!-- Cart Button with Counter -->
+                <button type="button" onclick="toggleCartDrawer(true)" 
+                        class="relative flex items-center gap-2 px-3.5 py-2.5 bg-brand-700 hover:bg-brand-800 text-white rounded-xl shadow-md shadow-brand-700/25 transition active:scale-95">
+                    <i class="fa-solid fa-bag-shopping text-sm"></i>
+                    <span class="font-bold text-xs hidden sm:inline">Bag</span>
+                    <span class="cart-count-badge hidden absolute -top-1.5 -right-1.5 bg-emerald-500 text-white font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar (under header) -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative w-full">
+                <input type="text" oninput="document.getElementById('search-input').value = this.value; document.getElementById('search-input').dispatchEvent(new Event('input'))" 
+                       placeholder="Search bra, nighty, lingerie..." 
+                       class="w-full bg-stone-100 border border-stone-200 rounded-full pl-10 pr-4 py-2 text-xs focus:outline-hidden focus:ring-2 focus:ring-brand-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-stone-400 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. Hero Luxury Lifestyle Banner -->
+    <section class="relative bg-gradient-to-b from-brand-50/60 to-transparent py-10 sm:py-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Text Column -->
+                <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-brand-200/60 shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+                        <span class="text-xs font-bold text-brand-700 tracking-wide uppercase">New Collection 2026</span>
+                    </div>
+
+                    <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-stone-900 tracking-tight leading-[1.15]">
+                        Embrace Confidence. <br>
+                        <span class="italic text-brand-700 font-serif">100% Confidential</span> to You.
+                    </h1>
+
+                    <p class="text-stone-600 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        Discover Bangladesh's most comfortable everyday bras, premium French lace lingerie, pure cotton nighties, and wellness essentials. Delivered in plain discreet packaging.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                        <a href="#shop-section" class="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold rounded-xl shadow-lg transition active:scale-95 flex items-center gap-2">
+                            <span>Explore Catalog</span>
+                            <i class="fa-solid fa-arrow-down text-xs"></i>
+                        </a>
+                        <button type="button" onclick="openPrivacyModal()" class="px-5 py-3.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-box text-brand-600"></i>
+                            <span>How Discreet Delivery Works</span>
+                        </button>
+                    </div>
+
+                    <!-- Trust Stats -->
+                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-stone-200/80 max-w-lg mx-auto lg:mx-0 text-center">
+                        <div>
+                            <div class="font-extrabold text-stone-900 text-lg">10,000+</div>
+                            <div class="text-[11px] text-stone-500 font-medium">Happy Women</div>
+                        </div>
+                        <div>
+                            <div class="font-extrabold text-emerald-600 text-lg">100%</div>
+                            <div class="text-[11px] text-stone-500 font-medium">Secret Packaging</div>
+                        </div>
+                        <div>
+                            <div class="font-extrabold text-brand-700 text-lg">24-48h</div>
+                            <div class="text-[11px] text-stone-500 font-medium">Fast Delivery</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Lifestyle Column -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-sm rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-stone-200">
+                        <img src="https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=800&auto=format&fit=crop&q=80" 
+                             alt="innbox luxury collection" 
+                             class="w-full h-[430px] object-cover">
+                        
+                        <!-- Floating Discreet Delivery Card -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-white/60 shadow-lg flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-stone-900 text-emerald-400 flex items-center justify-center text-base shrink-0">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div class="text-left">
+                                <div class="font-bold text-xs text-stone-900">Zero Logo Outer Box</div>
+                                <div class="text-[10px] text-stone-500">Plain cardboard, completely confidential for home or office.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Key Value Props (Discreet, COD, Support) -->
+    <section class="border-y border-stone-200/80 bg-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-brand-700 text-lg shrink-0">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-stone-900">Secret Packaging</h4>
+                        <p class="text-[11px] text-stone-500">No item name on outer parcel</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-emerald-600 text-lg shrink-0">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-stone-900">Cash on Delivery</h4>
+                        <p class="text-[11px] text-stone-500">Pay after receiving package</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-brand-700 text-lg shrink-0">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-stone-900">All Bangladesh</h4>
+                        <p class="text-[11px] text-stone-500">Inside Dhaka ৳70 | Outside ৳130</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-emerald-600 text-lg shrink-0">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-stone-900">Confidential WhatsApp</h4>
+                        <p class="text-[11px] text-stone-500">Female assistant available</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Category Selection Carousel / Buttons -->
+    <section class="py-8 bg-[#FAF6F2]" id="shop-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div>
+                    <span class="text-xs font-bold text-brand-700 uppercase tracking-widest">Handpicked Collections</span>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">Shop by Category</h2>
+                </div>
+
+                <!-- Sort & Meta -->
+                <div class="flex items-center gap-3">
+                    <span id="product-count" class="text-xs text-stone-500 font-semibold">Loading items...</span>
+                    <select id="sort-select" class="text-xs bg-white border border-stone-200 rounded-xl px-3 py-2 text-stone-700 font-semibold focus:outline-hidden focus:ring-2 focus:ring-brand-500 shadow-xs">
+                        <option value="default">Featured First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest Arrivals</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Category Pills Bar -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-3 hide-scrollbar">
+                <button type="button" data-category="all" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-brand-700 text-white shadow-sm shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>All Products</span>
+                </button>
+                <button type="button" data-category="bra" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-white text-stone-700 border border-stone-200 hover:border-brand-500 shadow-xs shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-brand-600"></i>
+                    <span>Bras</span>
+                </button>
+                <button type="button" data-category="panty" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-white text-stone-700 border border-stone-200 hover:border-brand-500 shadow-xs shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                    <span>Panties & Sets</span>
+                </button>
+                <button type="button" data-category="lingerie" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-white text-stone-700 border border-stone-200 hover:border-brand-500 shadow-xs shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-rose-500"></i>
+                    <span>Sexy Lingerie</span>
+                </button>
+                <button type="button" data-category="nighty" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-white text-stone-700 border border-stone-200 hover:border-brand-500 shadow-xs shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-moon text-indigo-500"></i>
+                    <span>Nighty & Robes</span>
+                </button>
+                <button type="button" data-category="wellness" class="cat-pill px-4 py-2 text-xs font-bold rounded-xl bg-white text-stone-700 border border-stone-200 hover:border-brand-500 shadow-xs shrink-0 transition flex items-center gap-2">
+                    <i class="fa-solid fa-shield-heart text-emerald-600"></i>
+                    <span>Sexual Wellness</span>
+                </button>
+            </div>
+
+            <!-- 6. Main Product Grid (Dynamic) -->
+            <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
+                <!-- Javascript dynamically injects product cards here -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. Discreet Packaging Guarantee Feature Banner -->
+    <section class="py-12 bg-stone-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="bg-gradient-to-r from-stone-800 to-stone-900 rounded-3xl p-6 sm:p-10 border border-stone-700 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    
+                    <div class="md:col-span-2 space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">
+                            <i class="fa-solid fa-shield-halved"></i> 100% PRIVACY PLEDGE
+                        </div>
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold">Worried About Packaging Privacy?</h3>
+                        <p class="text-stone-300 text-xs sm:text-sm leading-relaxed max-w-xl">
+                            We understand your concerns. All orders from <strong>innbox</strong> are sealed in strong, opaque, unbranded outer boxes with no reference to lingerie, bra, or sexual wellness. The delivery rider will have zero idea what is inside.
+                        </p>
+                    </div>
+
+                    <div class="text-left md:text-right">
+                        <button type="button" onclick="openPrivacyModal()" class="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-stone-950 font-bold text-xs rounded-xl shadow-lg transition active:scale-95 inline-flex items-center gap-2">
+                            <span>See How We Pack</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Interactive Size Guide Banner -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="bg-brand-50/70 border border-brand-200/60 rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="text-xs font-bold text-brand-700 uppercase tracking-wider">Perfect Fit Guarantee</span>
+                    <h3 class="font-serif text-xl sm:text-2xl font-bold text-stone-900">Not Sure About Your Size?</h3>
+                    <p class="text-stone-600 text-xs sm:text-sm max-w-lg">
+                        Finding the right bra cup or panty fit doesn't have to be guesswork. Use our easy 2-step sizing chart or message our female sizing assistant on WhatsApp.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button type="button" onclick="openSizeGuideModal()" class="px-5 py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl shadow transition">
+                        View Bra Size Chart
+                    </button>
+                    <a href="https://wa.me/8801700000000?text=Hello%20innbox!%20I%20need%20help%20choosing%20my%20size." target="_blank" class="px-4 py-3 bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 font-bold text-xs rounded-xl shadow-xs transition store-whatsapp-btn">
+                        <i class="fa-brands fa-whatsapp text-emerald-600 mr-1.5 text-sm"></i> Ask Size on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Customer Confidential Testimonials -->
+    <section class="py-12 bg-[#FAF6F2]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-lg mx-auto mb-10">
+                <span class="text-xs font-bold text-brand-700 uppercase tracking-widest">Verified Customer Love</span>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">Discretion & Quality First</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs space-y-3">
+                    <div class="flex items-center text-amber-400 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-stone-600 text-xs leading-relaxed italic">
+                        "The packaging was 100% confidential. Just a plain brown cardboard box. My family members didn't suspect anything. The t-shirt bra fabric is so soft and comfortable in this heat."
+                    </p>
+                    <div class="flex items-center justify-between text-xs pt-2 border-t border-stone-100">
+                        <span class="font-bold text-stone-800">S. R. (Dhanmondi, Dhaka)</span>
+                        <span class="text-emerald-600 text-[11px] font-semibold"><i class="fa-solid fa-check"></i> Verified Buyer</span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs space-y-3">
+                    <div class="flex items-center text-amber-400 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-stone-600 text-xs leading-relaxed italic">
+                        "Ordered babydoll and nightwear set for my honeymoon. Delivered within 36 hours via Pathao inside Dhaka. Quality matched the photos exactly. Will buy again!"
+                    </p>
+                    <div class="flex items-center justify-between text-xs pt-2 border-t border-stone-100">
+                        <span class="font-bold text-stone-800">Farhana K. (Gulshan)</span>
+                        <span class="text-emerald-600 text-[11px] font-semibold"><i class="fa-solid fa-check"></i> Verified Buyer</span>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs space-y-3">
+                    <div class="flex items-center text-amber-400 text-xs gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-stone-600 text-xs leading-relaxed italic">
+                        "Ordered wellness items outside Dhaka (Sylhet). Was nervous about delivery, but the outer invoice had only my phone number and general packaging code. Absolute peace of mind."
+                    </p>
+                    <div class="flex items-center justify-between text-xs pt-2 border-t border-stone-100">
+                        <span class="font-bold text-stone-800">Tanvir & Wife (Sylhet)</span>
+                        <span class="text-emerald-600 text-[11px] font-semibold"><i class="fa-solid fa-check"></i> Verified Buyer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Footer -->
+    <footer class="mt-auto bg-stone-900 text-stone-300 pt-14 pb-8 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-stone-800 text-xs">
+                
+                <!-- About -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-brand-700 flex items-center justify-center text-white font-serif font-bold italic">in</div>
+                        <span class="font-serif font-black text-xl text-white">innbox</span>
+                    </div>
+                    <p class="text-stone-400 leading-relaxed">
+                        Curated intimates, luxury lingerie, nightwear, and wellness essentials delivered confidentially across Bangladesh.
+                    </p>
+                    <div class="text-[11px] text-stone-500">Domain: <span class="text-brand-400 font-mono">innbox.qweekbd.com</span></div>
+                </div>
+
+                <!-- Categories -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-white text-xs uppercase tracking-wider">Categories</h4>
+                    <ul class="space-y-2 text-stone-400">
+                        <li><a href="#shop-section" onclick="resetFilters(); document.querySelector('[data-category=bra]').click()" class="hover:text-white">Everyday & Padded Bras</a></li>
+                        <li><a href="#shop-section" onclick="resetFilters(); document.querySelector('[data-category=panty]').click()" class="hover:text-white">Seamless Panties & Sets</a></li>
+                        <li><a href="#shop-section" onclick="resetFilters(); document.querySelector('[data-category=lingerie]').click()" class="hover:text-white">Sensual Lingerie & Babydoll</a></li>
+                        <li><a href="#shop-section" onclick="resetFilters(); document.querySelector('[data-category=nighty]').click()" class="hover:text-white">Cotton & Silk Nighties</a></li>
+                        <li><a href="#shop-section" onclick="resetFilters(); document.querySelector('[data-category=wellness]').click()" class="hover:text-white">Sexual Wellness Essentials</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Care -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-white text-xs uppercase tracking-wider">Customer Care</h4>
+                    <ul class="space-y-2 text-stone-400">
+                        <li><button type="button" onclick="openTrackModal()" class="hover:text-white text-left">Track Your Package</button></li>
+                        <li><button type="button" onclick="openPrivacyModal()" class="hover:text-white text-left">100% Discreet Packaging Policy</button></li>
+                        <li><button type="button" onclick="openSizeGuideModal()" class="hover:text-white text-left">Size Measurement Guide</button></li>
+                        <li><a href="admin.html" class="hover:text-brand-400 text-stone-500 flex items-center gap-1"><i class="fa-solid fa-lock text-[10px]"></i> Merchant Admin Portal</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Payments -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-white text-xs uppercase tracking-wider">Contact & Support</h4>
+                    <p class="text-stone-400">
+                        Hotline: <strong class="text-white store-phone">+880 1700-000000</strong><br>
+                        Available: 10:00 AM – 10:00 PM (Everyday)
+                    </p>
+                    <div class="pt-2">
+                        <span class="block text-[11px] font-semibold text-stone-400 mb-2">Accepted Payments</span>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-stone-800 text-pink-400 font-extrabold text-[10px] px-2.5 py-1 rounded border border-stone-700">bKash</span>
+                            <span class="bg-stone-800 text-orange-400 font-extrabold text-[10px] px-2.5 py-1 rounded border border-stone-700">Nagad</span>
+                            <span class="bg-stone-800 text-emerald-400 font-extrabold text-[10px] px-2.5 py-1 rounded border border-stone-700">COD</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-500 gap-2">
+                <p>&copy; 2026 innbox. All rights reserved. Confidential E-Commerce Platform.</p>
+                <p>Designed for innbox.qweekbd.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================= -->
+    <!-- SLIDE-OVER DRAWER: SHOPPING CART -->
+    <!-- ======================================================= -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Header -->
+        <div class="p-5 border-b border-stone-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-brand-700"></i>
+                <h3 class="font-bold text-stone-900 text-base">Your Shopping Bag</h3>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="p-2 text-stone-400 hover:text-stone-800 rounded-lg">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Items Container -->
+        <div id="cart-drawer-items" class="flex-1 overflow-y-auto p-5 space-y-3">
+            <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Footer / Checkout Trigger -->
+        <div class="p-5 border-t border-stone-100 bg-stone-50 space-y-4">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-stone-600 font-medium">Estimated Subtotal:</span>
+                <span id="cart-subtotal" class="font-bold text-lg text-brand-700">৳0</span>
+            </div>
+            <div class="text-[11px] text-stone-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-check text-emerald-500"></i>
+                <span>Delivery fees calculated at final checkout.</span>
+            </div>
+            <button onclick="openCheckoutDrawer()" class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm rounded-xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                <span>Proceed to Checkout</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: FAST 1-PAGE EXPRESS CHECKOUT -->
+    <!-- ======================================================= -->
+    <div id="checkout-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-100 relative">
+            
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-stone-100 flex items-center justify-between z-10">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center font-bold text-xs">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-stone-900 text-base">Express Confidential Checkout</h3>
+                        <p class="text-[10px] text-stone-400">Cash on Delivery & Instant Delivery</p>
+                    </div>
+                </div>
+                <button onclick="closeCheckoutDrawer()" class="p-2 text-stone-400 hover:text-stone-800 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="checkout-form" onsubmit="submitOrder(event)" class="p-6 space-y-5">
+                
+                <!-- Order items summary banner -->
+                <div class="bg-stone-50 p-3.5 rounded-2xl border border-stone-200/80">
+                    <div class="font-bold text-xs text-stone-700 mb-2 flex items-center justify-between">
+                        <span>Items in your bag:</span>
+                        <span class="text-[11px] text-brand-600 font-semibold cursor-pointer" onclick="closeCheckoutDrawer(); toggleCartDrawer(true);">Edit Bag</span>
+                    </div>
+                    <div id="checkout-items-preview" class="space-y-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Customer Personal Information -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-stone-500">1. Customer Information</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Your Full Name *</label>
+                            <input type="text" name="customer_name" required placeholder="e.g. Sadia Rahman" 
+                                   class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Phone Number (11-digit) *</label>
+                            <input type="tel" name="customer_phone" required placeholder="e.g. 017XXXXXXXX" 
+                                   class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Address & Zone -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-stone-500">2. Shipping Address & Area</h4>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Full Delivery Address *</label>
+                        <textarea name="customer_address" rows="2" required placeholder="House, Road, Area, Thana, District" 
+                                  class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden"></textarea>
+                    </div>
+
+                    <!-- Delivery Area Selector -->
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1.5">Select Delivery Area *</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 p-3 bg-stone-50 border border-stone-200 rounded-xl cursor-pointer hover:border-brand-500 transition">
+                                <input type="radio" name="checkout_delivery_zone" value="inside_dhaka" checked class="text-brand-600 focus:ring-brand-500">
+                                <div class="text-xs">
+                                    <strong class="block text-stone-900">Inside Dhaka</strong>
+                                    <span class="text-stone-500 text-[11px]">Delivery Fee: <span class="fee-inside-dhaka font-bold text-brand-700">৳70</span></span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-3 p-3 bg-stone-50 border border-stone-200 rounded-xl cursor-pointer hover:border-brand-500 transition">
+                                <input type="radio" name="checkout_delivery_zone" value="outside_dhaka" class="text-brand-600 focus:ring-brand-500">
+                                <div class="text-xs">
+                                    <strong class="block text-stone-900">Outside Dhaka</strong>
+                                    <span class="text-stone-500 text-[11px]">Delivery Fee: <span class="fee-outside-dhaka font-bold text-brand-700">৳130</span></span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-stone-500">3. Payment Option</h4>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="flex flex-col items-center p-3 bg-stone-50 border border-stone-200 rounded-xl cursor-pointer hover:border-brand-500 transition text-center">
+                            <input type="radio" name="payment_method" value="cod" checked onchange="onPaymentMethodChange(this)" class="text-brand-600 mb-1">
+                            <span class="text-xs font-bold text-stone-800">Cash on Delivery</span>
+                            <span class="text-[10px] text-stone-400">Pay at door</span>
+                        </label>
+                        <label class="flex flex-col items-center p-3 bg-stone-50 border border-stone-200 rounded-xl cursor-pointer hover:border-brand-500 transition text-center">
+                            <input type="radio" name="payment_method" value="bkash" onchange="onPaymentMethodChange(this)" class="text-brand-600 mb-1">
+                            <span class="text-xs font-bold text-pink-600">bKash</span>
+                            <span class="text-[10px] text-stone-400">Personal / Send</span>
+                        </label>
+                        <label class="flex flex-col items-center p-3 bg-stone-50 border border-stone-200 rounded-xl cursor-pointer hover:border-brand-500 transition text-center">
+                            <input type="radio" name="payment_method" value="nagad" onchange="onPaymentMethodChange(this)" class="text-brand-600 mb-1">
+                            <span class="text-xs font-bold text-orange-600">Nagad</span>
+                            <span class="text-[10px] text-stone-400">Personal / Send</span>
+                        </label>
+                    </div>
+
+                    <!-- bKash instructions box -->
+                    <div id="bkash-info-box" class="p-3 bg-pink-50 border border-pink-200 rounded-xl text-xs text-pink-900 hidden">
+                        <strong class="block mb-1 font-bold">bKash Payment Instruction:</strong>
+                        Send Money to Personal bKash number: <strong id="bkash-merchant-number" class="text-pink-700 font-mono text-sm">01700000000</strong>. Enter your Transaction ID below.
+                    </div>
+
+                    <!-- Nagad instructions box -->
+                    <div id="nagad-info-box" class="p-3 bg-orange-50 border border-orange-200 rounded-xl text-xs text-orange-900 hidden">
+                        <strong class="block mb-1 font-bold">Nagad Payment Instruction:</strong>
+                        Send Money to Nagad number: <strong id="nagad-merchant-number" class="text-orange-700 font-mono text-sm">01700000000</strong>. Enter your Transaction ID below.
+                    </div>
+
+                    <div id="trx-id-group" class="hidden">
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Transaction ID (TrxID)</label>
+                        <input type="text" name="trx_id" placeholder="e.g. 9KJ72M01PX" class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                    </div>
+
+                    <!-- Secret notes -->
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Confidential Notes (Optional)</label>
+                        <input type="text" name="order_notes" placeholder="e.g. Please call before arriving or deliver at specific time" 
+                               class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                    </div>
+                </div>
+
+                <!-- Price Breakdown & Submit -->
+                <div class="pt-4 border-t border-stone-200 space-y-3">
+                    <div class="flex justify-between text-xs text-stone-600">
+                        <span>Items Subtotal:</span>
+                        <span id="checkout-subtotal" class="font-bold text-stone-900">৳0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-600">
+                        <span>Delivery Charge:</span>
+                        <span id="checkout-delivery-fee" class="font-bold text-stone-900">৳70</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-stone-900 pt-2 border-t border-stone-100">
+                        <span>Total Payable:</span>
+                        <span id="checkout-total" class="text-brand-700 text-lg">৳0</span>
+                    </div>
+
+                    <button type="submit" id="btn-place-order" 
+                            class="w-full py-4 bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm rounded-xl shadow-xl transition active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Confirm & Place Order</span>
+                    </button>
+                    <p class="text-[11px] text-center text-stone-400">
+                        <i class="fa-solid fa-lock text-emerald-500 mr-1"></i> Your identity & purchase remain 100% confidential.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: ORDER SUCCESS CONFIRMATION -->
+    <!-- ======================================================= -->
+    <div id="order-success-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border border-stone-100 space-y-4">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            
+            <h3 class="font-serif text-2xl font-bold text-stone-900">Order Placed Successfully!</h3>
+            <p class="text-xs text-stone-600 leading-relaxed">
+                Thank you! Your order has been placed securely and will be processed in confidential packaging.
+            </p>
+
+            <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200 text-xs space-y-1">
+                <div class="text-stone-400">Your Secret Order Number:</div>
+                <div id="success-order-number" class="text-xl font-extrabold text-brand-700 font-mono tracking-wider">INB-0000</div>
+                <div class="text-stone-500 pt-1">Total Bill: <strong id="success-order-total" class="text-stone-900">৳0</strong></div>
+            </div>
+
+            <div class="pt-2 space-y-2">
+                <a id="success-whatsapp-link" href="#" target="_blank" 
+                   class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>Confirm Directly on WhatsApp</span>
+                </a>
+                <button type="button" onclick="closeOrderSuccessModal()" 
+                        class="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs rounded-xl transition">
+                    Back to Storefront
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: PRODUCT QUICK VIEW -->
+    <!-- ======================================================= -->
+    <div id="quickview-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-stone-100 text-stone-700 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="quickview-content">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: ORDER TRACKING -->
+    <!-- ======================================================= -->
+    <div id="track-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-stone-100 mb-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-brand-700 text-lg"></i>
+                    <h3 class="font-bold text-stone-900 text-base">Track Your Order</h3>
+                </div>
+                <button onclick="closeTrackModal()" class="text-stone-400 hover:text-stone-800 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleOrderTracking(event)" class="space-y-3">
+                <div class="relative">
+                    <input type="text" id="track-input" required placeholder="Enter Order Number (INB-XXXX) or Phone" 
+                           class="w-full text-xs p-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-hidden">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs rounded-xl transition">
+                    Search Order Status
+                </button>
+            </form>
+
+            <div id="track-results" class="mt-4 max-h-80 overflow-y-auto">
+                <!-- Search results injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: DISCREET PACKAGING GUIDE -->
+    <!-- ======================================================= -->
+    <div id="privacy-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <h3 class="font-bold text-stone-900 text-base">Our 100% Discreet Packaging</h3>
+                </div>
+                <button onclick="closePrivacyModal()" class="text-stone-400 hover:text-stone-800 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-stone-600 leading-relaxed">
+                <div class="p-3 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200/70 font-medium">
+                    🛡️ <strong>Absolute Privacy Promise:</strong> No person (family, courier driver, neighbors) can see what is inside your parcel.
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-stone-900 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+                        <div>
+                            <strong class="text-stone-900 block">Plain Outer Box:</strong>
+                            Packed inside an opaque brown cardboard box or heavy-duty dark polybag. Zero brand logo.
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-stone-900 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+                        <div>
+                            <strong class="text-stone-900 block">Neutral Shipping Label:</strong>
+                            The courier sticker contains only your shipping address and phone number. No product titles or sensitive keywords appear on the label.
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-stone-900 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
+                        <div>
+                            <strong class="text-stone-900 block">Confidential Delivery Call:</strong>
+                            The delivery partner will simply call you before delivery as a standard parcel.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 text-center">
+                    <button type="button" onclick="closePrivacyModal()" class="w-full py-2.5 bg-stone-900 text-white font-bold rounded-xl text-xs">
+                        Understood, Got it!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL: BRA & UNDERWEAR SIZE GUIDE -->
+    <!-- ======================================================= -->
+    <div id="size-guide-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-ruler-combined text-brand-700 text-lg"></i>
+                    <h3 class="font-bold text-stone-900 text-base">Standard Bangladesh Size Guide</h3>
+                </div>
+                <button onclick="closeSizeGuideModal()" class="text-stone-400 hover:text-stone-800 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-stone-700">
+                <h4 class="font-bold text-stone-900 text-sm">Bra Sizing (Band & Cup)</h4>
+                <div class="border border-stone-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-stone-50 text-stone-600 border-b border-stone-200">
+                            <tr>
+                                <th class="p-2.5">Underbust (Inches)</th>
+                                <th class="p-2.5">Band Size</th>
+                                <th class="p-2.5">Bust Over (Inches)</th>
+                                <th class="p-2.5">Recommended Cup</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-100">
+                            <tr><td class="p-2.5">28" - 29"</td><td class="p-2.5 font-bold">32</td><td class="p-2.5">33" - 34"</td><td class="p-2.5 font-bold text-brand-700">32B</td></tr>
+                            <tr><td class="p-2.5">30" - 31"</td><td class="p-2.5 font-bold">34</td><td class="p-2.5">35" - 36"</td><td class="p-2.5 font-bold text-brand-700">34B / 34C</td></tr>
+                            <tr><td class="p-2.5">32" - 33"</td><td class="p-2.5 font-bold">36</td><td class="p-2.5">37" - 38"</td><td class="p-2.5 font-bold text-brand-700">36B / 36C</td></tr>
+                            <tr><td class="p-2.5">34" - 35"</td><td class="p-2.5 font-bold">38</td><td class="p-2.5">39" - 40"</td><td class="p-2.5 font-bold text-brand-700">38B / 38C</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="font-bold text-stone-900 text-sm mt-4">Panty & Nighty Sizing</h4>
+                <div class="border border-stone-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-stone-50 text-stone-600 border-b border-stone-200">
+                            <tr>
+                                <th class="p-2.5">Size</th>
+                                <th class="p-2.5">Waist (Inches)</th>
+                                <th class="p-2.5">Hip (Inches)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-100">
+                            <tr><td class="p-2.5 font-bold text-brand-700">M</td><td class="p-2.5">26" - 28"</td><td class="p-2.5">34" - 36"</td></tr>
+                            <tr><td class="p-2.5 font-bold text-brand-700">L</td><td class="p-2.5">29" - 31"</td><td class="p-2.5">37" - 39"</td></tr>
+                            <tr><td class="p-2.5 font-bold text-brand-700">XL</td><td class="p-2.5">32" - 34"</td><td class="p-2.5">40" - 42"</td></tr>
+                            <tr><td class="p-2.5 font-bold text-brand-700">XXL</td><td class="p-2.5">35" - 38"</td><td class="p-2.5">43" - 46"</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pt-2">
+                    <button type="button" onclick="closeSizeGuideModal()" class="w-full py-2.5 bg-brand-700 text-white font-bold rounded-xl text-xs">
+                        Close Size Guide
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Quick Order Button -->
+    <a href="https://wa.me/8801700000000?text=Hello%20innbox!%20I%20would%20like%20to%20order%20products." 
+       target="_blank" 
+       class="store-whatsapp-btn fixed bottom-6 left-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition active:scale-95"
+       title="Chat with female consultant on WhatsApp">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/store.js"></script>
+</body>
+</html>
