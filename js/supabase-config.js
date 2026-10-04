@@ -5,9 +5,14 @@
  */
 
 // Default Configuration (Can be updated via Admin Panel Settings)
+// Production Supabase Credentials
+const SUPABASE_PROJECT_URL = 'https://zmxrghnklvvkvrizztvx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpteHJnaG5rbHZ2a3ZyaXp6dHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwOTg1MTEsImV4cCI6MjEwNjY3NDUxMX0.bOn7TBT9ZIEkeUaIOAq1RdATI6CdNMSilHc1HsbsOjs';
+
+// Default Configuration (Can be updated via Admin Panel Settings)
 const DEFAULT_CONFIG = {
-    supabaseUrl: localStorage.getItem('innbox_supabase_url') || '',
-    supabaseAnonKey: localStorage.getItem('innbox_supabase_anon_key') || '',
+    supabaseUrl: localStorage.getItem('innbox_supabase_url') || SUPABASE_PROJECT_URL,
+    supabaseAnonKey: localStorage.getItem('innbox_supabase_anon_key') || SUPABASE_ANON_KEY,
     storePhone: '+880 1700-000000',
     whatsappNumber: '8801700000000',
     storeDomain: 'innbox.qweekbd.com',
@@ -22,8 +27,8 @@ const DEFAULT_CONFIG = {
 let supabaseClient = null;
 
 function initSupabase() {
-    const url = localStorage.getItem('innbox_supabase_url') || DEFAULT_CONFIG.supabaseUrl;
-    const key = localStorage.getItem('innbox_supabase_anon_key') || DEFAULT_CONFIG.supabaseAnonKey;
+    const url = localStorage.getItem('innbox_supabase_url') || DEFAULT_CONFIG.supabaseUrl || SUPABASE_PROJECT_URL;
+    const key = localStorage.getItem('innbox_supabase_anon_key') || DEFAULT_CONFIG.supabaseAnonKey || SUPABASE_ANON_KEY;
 
     if (url && key && window.supabase && typeof window.supabase.createClient === 'function') {
         try {
