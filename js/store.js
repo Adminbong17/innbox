@@ -202,7 +202,7 @@ function renderProducts() {
                         </button>
                         <button onclick="addToCart('${product.id}', '${defaultSize}')" 
                                 class="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition active:scale-95 border border-rose-200/60">
-                            <i class="fa-solid fa-bag-shopping text-xs"></i> Add
+                            <i class="fa-solid fa-cart-shopping text-xs"></i> Add
                         </button>
                     </div>
                 </div>
@@ -327,7 +327,7 @@ function openQuickView(productId) {
                     </button>
                     <button type="button" onclick="confirmModalAddToCart()" 
                             class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg transition">
-                        <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+                        <i class="fa-solid fa-cart-shopping"></i> Add to Cart
                     </button>
                 </div>
             </div>
