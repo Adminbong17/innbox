@@ -9,12 +9,13 @@
 const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://zmxrghnklvvkvrizztvx.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpteHJnaG5rbHZ2a3ZyaXp6dHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwOTg1MTEsImV4cCI6MjEwNjY3NDUxMX0.bOn7TBT9ZIEkeUaIOAq1RdATI6CdNMSilHc1HsbsOjs';
+// Use Service Role Key for serverless cron to bypass RLS, with anon fallback
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpteHJnaG5rbHZ2a3ZyaXp6dHZ4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MTA5ODUxMSwiZXhwIjoyMTA2Njc0NTExfQ.oGIe812-8avvMBd7do2Zdz_JUUfQMx7_rK7cjWI3mQY';
 
 async function handler(req, res) {
   const startTime = Date.now();
   const timestamp = new Date().toISOString();
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const report = {
     success: true,

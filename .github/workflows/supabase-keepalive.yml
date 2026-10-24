@@ -41,13 +41,27 @@ jobs:
             -H "Authorization: Bearer $SUPABASE_KEY")
           echo "READ HTTP Status: $READ_CODE"
 
-          # 2. Direct WRITE (Heartbeat update on keep_alive_logs)
-          LOG_PAYLOAD="{\"pinged_at\":\"$TIMESTAMP\",\"source\":\"github_actions\",\"status\":\"active\",\"meta\":{\"runner\":\"ubuntu-latest\"}}"
-          WRITE_CODE=$(curl -s -o write_res.json -w "%{http_code}" -X POST "$SUPABASE_URL/rest/v1/keep_alive_logs" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY" \
+          # 2. Direct WRITE (Heartbeat update on store_settings)
+          SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+          if [ -z "$SERVICE_KEY" ]; then
+            SERVICE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpteHJnaG5rbHZ2a3ZyaXp6dHZ4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MTA5ODUxMSwiZXhwIjoyMTA2Njc0NTExfQ.oGIe812-8avvMBd7do2Zdz_JUUfQMx7_rK7cjWI3mQY"
+          fi
+
+          SETTING_PAYLOAD="[{\"key\":\"last_keep_alive_ping\",\"value\":{\"timestamp\":\"$TIMESTAMP\",\"source\":\"github_actions\"}}]"
+          WRITE_CODE=$(curl -s -o write_res.json -w "%{http_code}" -X POST "$SUPABASE_URL/rest/v1/store_settings" \
+            -H "apikey: $SERVICE_KEY" \
+            -H "Authorization: Bearer $SERVICE_KEY" \
             -H "Content-Type: application/json" \
-            -d "$LOG_PAYLOAD")
-          echo "WRITE HTTP Status: $WRITE_CODE"
+            -H "Prefer: resolution=merge-duplicates" \
+            -d "$SETTING_PAYLOAD")
+          echo "WRITE store_settings Status: $WRITE_CODE"
+
+          # 3. Direct WRITE on keep_alive_logs (if table exists)
+          LOG_PAYLOAD="{\"pinged_at\":\"$TIMESTAMP\",\"source\":\"github_actions\",\"status\":\"active\",\"meta\":{\"runner\":\"ubuntu-latest\"}}"
+          curl -s -o /dev/null -X POST "$SUPABASE_URL/rest/v1/keep_alive_logs" \
+            -H "apikey: $SERVICE_KEY" \
+            -H "Authorization: Bearer $SERVICE_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$LOG_PAYLOAD" || true
 
           echo "✅ Supabase database keep-alive pulse completed successfully!"
